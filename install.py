@@ -35,7 +35,7 @@ def install_iTerm2() -> None:
 def install_oh_my_zsh() -> None:
     logging.info("Installing Oh My Zsh.")
     run_subprocess(
-        ["sh", "-c", "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"])
+            ["sh", "-c", "curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh"])
 
 
 def install_starship() -> None:
@@ -44,14 +44,14 @@ def install_starship() -> None:
         run_subprocess(["brew", "install", "starship"])
     elif sys.platform == "linux":
         run_subprocess(
-            ["sudo", "sh", "-c", "curl -fsSL https://starship.rs/install.sh | sh"])
+            ["sudo", "sh", "-c", "curl -fsSL https://starship.rs/install.sh | sh --yes"])
 
 
 def install_scm_breeze() -> None:
     logging.info("Installing SCM Breeze.")
     run_subprocess(["git", "clone", "git://github.com/scmbreeze/scm_breeze.git",
                    "$HOME/.scm_breeze"])
-    run_subprocess(["$HOME/.scm_breeze/install.sh"])
+    run_subprocess([str(Path.home()) + "/.scm_breeze/install.sh"])
     run_subprocess(["source", "$HOME/.zshrc"])
 
 
