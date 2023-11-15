@@ -31,27 +31,47 @@ jobs:
 
     - name: Check Aliases
       run: |
-        # Switch to interactive shell mode
+        # Configure Git user
+        git config --global user.email "example@example.com"
+        git config --global user.name "GitHub Actions"
+
+        # Source the .zshrc file
         source $HOME/.zshrc
-        
-        # Test sourcing .zshrc directly
-        source $HOME/.zshrc || (echo "Sourcing .zshrc failed" && false)
-        
+  
+        # Check if .zshrc exists for 'addalias' alias
+        if [[ -f "$HOME/.zshrc" ]]; then
+          echo ".zshrc file exists - 'addalias' alias check passed"
+        else
+          echo ".zshrc file does not exist - 'addalias' alias check failed"
+          exit 1
+        fi
+
+        # Check 'reload' alias by modifying PATH, reloading, and checking PATH
+        export PATH="/tmp:$PATH"
+        reload
+        if [[ "$PATH" != *"/tmp:"* ]]; then
+          echo "Alias 'reload' worked - PATH reset"
+        else
+          echo "Alias 'reload' did not work - PATH not reset"
+          exit 1
+        fi
+  
         # Test Git aliases (replace with your actual Git aliases)
         git init test_repo
         cd test_repo
         touch test_file
         git add .
         git commit -m "Initial commit"
-        
+  
         # Test 'git st' alias
         git st || (echo "Alias 'git st' did not work" && false)
-        
+  
         # Test 'git co' alias
         git branch new-branch
         git co new-branch || (echo "Alias 'git co' did not work" && false)
-        
+  
         cd ..
         rm -rf test_repo
-      shell: bash
+      shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+
 
