@@ -48,7 +48,7 @@ The pono-dev-tools suite is designed to enhance productivity by:
 
 ### Contributing
 
-We welcome contributions to the pono-dev-tools project. If you're interested in contributing, please read our contribution guidelines for more information on how to get started.
+We welcome contributions to the pono-dev-tools project. If you're interested in project raisea ticket with the proposal of adding new tools that can be added to the pono-dev-tools suite.
 
 ### License
 
