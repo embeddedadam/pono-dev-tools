@@ -40,11 +40,7 @@ def install_oh_my_zsh() -> None:
 
 def install_starship() -> None:
     logging.info("Installing Starship.")
-    if sys.platform == "darwin":
-        run_subprocess(["brew", "install", "starship"])
-    elif sys.platform == "linux":
-        run_subprocess(
-            ["sudo", "sh", "-c", "curl -fsSL https://starship.rs/install.sh | sh --yes"])
+    run_subprocess(["curl -fsSL https://starship.rs/install.sh | sh"])
 
 
 def install_scm_breeze() -> None:
