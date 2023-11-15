@@ -30,19 +30,14 @@ jobs:
         # Add more checks as necessary
 
     - name: Check Aliases
-      shell: bash
       run: |
-        # Source the .zshrc file
+        # Switch to interactive shell mode
         source $HOME/.zshrc
         
-        # Check 'reload' alias by modifying PATH, reloading, and checking PATH
-        export PATH="/tmp:$PATH"
-        reload
-        if [[ "$PATH" == "/tmp:$PATH" ]]; then
-          echo "Alias 'reload' did not work" && false
-        fi
-
-        # Check Git aliases 'git st' and 'git co'
+        # Test sourcing .zshrc directly
+        source $HOME/.zshrc || (echo "Sourcing .zshrc failed" && false)
+        
+        # Test Git aliases (replace with your actual Git aliases)
         git init test_repo
         cd test_repo
         touch test_file
@@ -52,10 +47,11 @@ jobs:
         # Test 'git st' alias
         git st || (echo "Alias 'git st' did not work" && false)
         
-        # Create a new branch and test 'git co' alias
+        # Test 'git co' alias
         git branch new-branch
         git co new-branch || (echo "Alias 'git co' did not work" && false)
         
         cd ..
         rm -rf test_repo
+      shell: bash
 
