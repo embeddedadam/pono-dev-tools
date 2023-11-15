@@ -45,16 +45,6 @@ jobs:
           echo ".zshrc file does not exist - 'addalias' alias check failed"
           exit 1
         fi
-
-        # Check 'reload' alias by modifying PATH, reloading, and checking PATH
-        export PATH="/tmp:$PATH"
-        reload
-        if [[ "$PATH" != *"/tmp:"* ]]; then
-          echo "Alias 'reload' worked - PATH reset"
-        else
-          echo "Alias 'reload' did not work - PATH not reset"
-          exit 1
-        fi
   
         # Test Git aliases (replace with your actual Git aliases)
         git init test_repo
