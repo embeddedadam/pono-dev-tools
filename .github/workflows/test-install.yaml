@@ -4,7 +4,10 @@ on: [push, pull_request]
 
 jobs:
   test-install:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
 
     steps:
     - name: Checkout Repository
@@ -15,8 +18,13 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install Dependencies
+    - name: Install Dependencies (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
       run: sudo apt-get update && sudo apt-get install -y zsh git curl
+
+    - name: Install Dependencies (macOS)
+      if: matrix.os == 'macos-latest'
+      run: brew install git curl
 
     - name: Run Install Script
       run: python install.py
@@ -47,7 +55,7 @@ jobs:
         cd test_repo
         touch test_file
         git add .
-        git commit -m "Initial commit"
+        git commit -m "Initial commit" --no-verify
   
         # Test 'git st' alias
         git st || (echo "Alias 'git st' did not work" && false)
@@ -59,5 +67,3 @@ jobs:
         cd ..
         rm -rf test_repo
       shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
-
-
