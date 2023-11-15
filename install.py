@@ -40,7 +40,11 @@ def install_oh_my_zsh() -> None:
 
 def install_starship() -> None:
     logging.info("Installing Starship.")
-    run_subprocess(["curl -fsSL https://starship.rs/install.sh | sh"])
+    try:
+        run_subprocess(["bash", "-c", "curl -fsSL https://starship.rs/install.sh | sh"])
+    except CalledProcessError as e:
+        logging.error(f"Failed to install Starship: {e}")
+        sys.exit(1)
 
 
 def install_scm_breeze() -> None:
