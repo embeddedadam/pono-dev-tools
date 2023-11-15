@@ -49,10 +49,14 @@ def install_starship() -> None:
 
 def install_scm_breeze() -> None:
     logging.info("Installing SCM Breeze.")
-    run_subprocess(["git", "clone", "git://github.com/scmbreeze/scm_breeze.git",
-                   "$HOME/.scm_breeze"])
-    run_subprocess([str(Path.home()) + "/.scm_breeze/install.sh"])
-    run_subprocess(["source", "$HOME/.zshrc"])
+    home_dir = str(Path.home())
+    scm_breeze_dir = Path(home_dir) / ".scm_breeze"
+    if not scm_breeze_dir.exists():
+        run_subprocess(["git", "clone", "https://github.com/scmbreeze/scm_breeze.git", str(scm_breeze_dir)])
+    if scm_breeze_dir.exists():
+        run_subprocess([str(scm_breeze_dir / "install.sh")])
+    else:
+        logging.error("Failed to clone SCM Breeze repository.")
 
 
 def copy_configs() -> None:
