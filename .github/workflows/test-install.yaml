@@ -31,10 +31,6 @@ jobs:
 
     - name: Check Aliases
       run: |
-        # Configure Git user
-        git config --global user.email "example@example.com"
-        git config --global user.name "GitHub Actions"
-
         # Source the .zshrc file
         source $HOME/.zshrc
   
