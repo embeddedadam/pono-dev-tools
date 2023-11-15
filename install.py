@@ -79,7 +79,7 @@ def setup_global_git_hooks() -> None:
     logging.info("Setting up global Git hooks.")
     hook_dir: Path = Path.home() / ".git_hooks"
     hook_dir.mkdir(exist_ok=True)
-    shutil.copy(Path(__file__).parent / "commit-msg", hook_dir / "commit-msg")
+    shutil.copy(Path(__file__).parent / "configs" / "commit-msg", hook_dir / "commit-msg")
     run_subprocess(["git", "config", "--global",
                    "core.hooksPath", str(hook_dir)])
 
