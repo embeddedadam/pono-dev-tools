@@ -66,4 +66,3 @@ jobs:
   
         cd ..
         rm -rf test_repo
-      shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
