@@ -1,0 +1,61 @@
+name: Test Install Script
+
+on: [push, pull_request]
+
+jobs:
+  test-install:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Dependencies
+      run: sudo apt-get update && sudo apt-get install -y zsh git curl
+
+    - name: Run Install Script
+      run: python install.py
+
+    - name: Check Installation Results
+      run: |
+        test -d "$HOME/.oh-my-zsh" && echo "oh-my-zsh installed successfully"
+        test -d "$HOME/.scm_breeze" && echo "SCM Breeze installed successfully"
+        test -d "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions" && echo "zsh-autosuggestions installed successfully"
+        test -d "$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" && echo "zsh-syntax-highlighting installed successfully"
+        # Add more checks as necessary
+
+    - name: Check Aliases
+      shell: bash
+      run: |
+        # Source the .zshrc file
+        source $HOME/.zshrc
+        
+        # Check 'reload' alias by modifying PATH, reloading, and checking PATH
+        export PATH="/tmp:$PATH"
+        reload
+        if [[ "$PATH" == "/tmp:$PATH" ]]; then
+          echo "Alias 'reload' did not work" && false
+        fi
+
+        # Check Git aliases 'git st' and 'git co'
+        git init test_repo
+        cd test_repo
+        touch test_file
+        git add .
+        git commit -m "Initial commit"
+        
+        # Test 'git st' alias
+        git st || (echo "Alias 'git st' did not work" && false)
+        
+        # Create a new branch and test 'git co' alias
+        git branch new-branch
+        git co new-branch || (echo "Alias 'git co' did not work" && false)
+        
+        cd ..
+        rm -rf test_repo
+

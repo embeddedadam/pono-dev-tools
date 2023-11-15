@@ -1,0 +1,41 @@
+[user]
+    name = Adam Galecki
+    email = embeddedadam@gmail.com
+
+[alias]
+    co = checkout
+    br = branch
+    ci = commit
+    st = status
+    unstage = reset HEAD --
+    last = log -1 HEAD
+
+[init]
+    defaultBranch = main
+
+[color]
+    ui = auto
+
+[core]
+    editor = vim
+
+[credential]
+    helper = cache --timeout=0  # Cache credentials
+
+[push]
+    default = current
+
+[pull]
+    rebase = false  # Set to true if you prefer rebase over merge
+
+[format]
+    pretty = oneline  # or another preferred format
+
+[diff]
+    tool = default-difftool
+
+[merge]
+    tool = default-mergetool
+
+[help]
+    autocorrect = 20  # Wait 2.0 seconds
