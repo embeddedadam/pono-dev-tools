@@ -64,6 +64,7 @@ def copy_configs() -> None:
     config_dir: Path = Path(__file__).parent / "configs"
     home_dir: Path = Path.home()
     for config in config_dir.glob("*"):
+        logging.info(f"Copying {config.name} to {home_dir / f'.{config.name}'}")
         shutil.copy(config, home_dir / f".{config.name}")
 
 
