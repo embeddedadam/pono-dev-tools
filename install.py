@@ -1,3 +1,4 @@
+import os
 import subprocess
 import sys
 import shutil
@@ -105,26 +106,26 @@ def install_zsh_syntax_highlighting() -> None:
 
 def update_zshrc_plugins() -> None:
     logging.info("Updating .zshrc with new plugins.")
-    zshrc_path: Path = Path.home() / ".zshrc"
-    with open(zshrc_path, "r") as file:
-        lines: List[str] = file.readlines()
+    zshrc_path = "~/.zshrc"
+    expanded_path = os.path.expanduser(zshrc_path)
 
-    updated: bool = False
-    for i, line in enumerate(lines):
-        if line.strip().startswith("plugins=("):
-            if "zsh-autosuggestions" not in line:
-                lines[i] = line.rstrip()[:-1] + \
-                    " zsh-autosuggestions" + line[-1]
-                updated = True
-            if "zsh-syntax-highlighting" not in line:
-                lines[i] = line.rstrip()[:-1] + \
-                    " zsh-syntax-highlighting" + line[-1]
-                updated = True
-            break
+    # Define the plugins to add
+    plugins_to_add = ['zsh-autosuggestions', 'zsh-syntax-highlighting']
 
-    if updated:
-        with open(zshrc_path, "w") as file:
-            file.writelines(lines)
+    # Read the existing .zshrc content
+    with open(expanded_path, 'r') as file:
+        lines = file.readlines()
+
+    # Check and add each plugin if not already present
+    for plugin in plugins_to_add:
+        plugin_str = f"plugins+=({plugin})"
+        if not any(plugin_str in line for line in lines):
+            # Add the plugin to the plugins list in the file
+            lines = [line.replace('plugins=(', f'plugins=({plugin} ') if 'plugins=(' in line else line for line in lines]
+
+    # Write the updated content back to .zshrc
+    with open(expanded_path, 'w') as file:
+        file.writelines(lines)
 
 
 def main() -> None:
